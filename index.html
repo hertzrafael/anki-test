@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANKI</title>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            padding: 5px;
+        }
+
+        #question {
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h3 id="question">a</h3>
+        <p id="answer"></p>
+        
+        <div class="buttons">
+            <button id="show" onclick="showAnswer()">Mostrar resposta</button>
+            <button id="next" onclick="runQuestion()">Próxima Pergunta</button>
+        </div>
+    </div>
+
+    <script>
+
+        questionElement = document.getElementById('question')
+        answerElement = document.getElementById('answer')
+
+        questions = []
+        actualQuestion = null
+
+        fetch('files/questions.json')
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json)
+
+                    questions = json
+                    console.log('primeira questão: ', questions[0])
+
+                    runQuestion()
+                })
+                .error(er => console.log(er));
+            
+
+        function runQuestion() {
+            let random = questions[Math.floor(Math.random() * questions.length)];
+            actualQuestion = random;
+
+            let {pergunta, _} = random;
+
+            questionElement.innerHTML = pergunta;
+            answerElement.innerHTML = '';
+
+            console.log(question, answer)
+        }
+
+        function showAnswer() {
+            if(actualQuestion == null)
+                return;
+            
+            let {_,resposta} = actualQuestion;
+
+            answerElement.innerHTML = resposta;
+        }
+
+    </script>
+</body>
+
+</html>
